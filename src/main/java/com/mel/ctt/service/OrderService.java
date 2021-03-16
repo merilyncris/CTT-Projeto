@@ -14,8 +14,6 @@ import com.mel.ctt.domain.OrderStatus;
 import com.mel.ctt.domain.Payment;
 import com.mel.ctt.domain.Product;
 import com.mel.ctt.dto.request.OrderDtoRequest;
-import com.mel.ctt.dto.request.OrderStatusDtoRequest;
-import com.mel.ctt.exception.NotFound;
 import com.mel.ctt.repository.ClientRepository;
 import com.mel.ctt.repository.OrderRepository;
 import com.mel.ctt.repository.OrderStatusRepository;
@@ -84,36 +82,6 @@ public class OrderService {
 
 		orderRepository.saveAndFlush(order);
 	}
-	
-	public void update(OrderStatusDtoRequest orderSatusDtoRequest, Long id) {
-		Order order = orderRepository.findById(id).orElseThrow(() -> new NotFound());
-		OrderStatus orderStatus = order.getStatus();
-		orderStatus.setPaymentStatus(orderSatusDtoRequest.getPaymentStatus());
-		orderStatus.setName(orderSatusDtoRequest.getName());
-		orderStatus.setCode(orderSatusDtoRequest.getCode());
-		
-		orderStatusRepository.saveAndFlush(orderStatus);
-		
-		
-		Long idOrderStatus = orderStatus.getId();
-		String processingCode = Long.toString(idOrderStatus);
-		String outsiderCode = orderStatus.getCode();
-
-		String finalCode;		
-		
-		if (idOrderStatus < 10) {
-			finalCode = outsiderCode + "0" + processingCode;
-		} else {
-			finalCode = outsiderCode + processingCode;
-		}
-
-		
-		
-		orderStatus.setCode(finalCode);
-		
-		order.setStatus(orderStatus);
-		orderRepository.save(order);
-	}
 
 	public Order findById(Long id) {
 		Optional<Order> order = orderRepository.findById(id);
@@ -123,4 +91,30 @@ public class OrderService {
 	public List<Order> findByOrderByStatusAsc() {
 		return this.findByOrderByStatusAsc();
 	}
+
+//	public void update(OrderStatusDtoRequest orderSatusDtoRequest, Long id) {
+//		Order order = orderRepository.findById(id).orElseThrow(() -> new NotFound());
+//		OrderStatus orderStatus = order.getStatus();
+//		orderStatus.setPaymentStatus(orderSatusDtoRequest.getPaymentStatus());
+//		orderStatus.setName(orderSatusDtoRequest.getName());
+//		orderStatus.setCode(orderSatusDtoRequest.getCode());
+//
+//		orderStatusRepository.saveAndFlush(orderStatus);
+//
+//		Long idOrderStatus = orderStatus.getId();
+//		String processingCode = Long.toString(idOrderStatus);
+//		String outsiderCode = orderStatus.getCode();
+//
+//		String finalCode;
+//
+//		if (idOrderStatus < 10) {
+//			finalCode = outsiderCode + "0" + processingCode;
+//		} else {
+//			finalCode = outsiderCode + processingCode;
+//		}
+//
+//		orderStatus.setCode(finalCode);
+//		order.setStatus(orderStatus);
+//		orderRepository.save(order);
+//	}
 }
