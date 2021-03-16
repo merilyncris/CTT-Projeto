@@ -80,11 +80,9 @@ public class ProductService implements Serializable {
 		return productRepository.findByCategory(category);
 	}
 
-//	public List<Product> fullSearch(Long categoryId){
-//		List<Product> products= productRepository.findAll(cate.findByCategory(categoryId));
-//		if(categoryId != 0) {
-//			products.findByCategory(categoryId);
-//		 }
-//	}
+	public void delete(Long id) {
+		Product product = productRepository.findById(id).orElseThrow(() -> new NotFound());
+		productRepository.delete(product);
+	}
 
 }
