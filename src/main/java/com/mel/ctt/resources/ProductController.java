@@ -70,6 +70,7 @@ public class ProductController {
 	}
 	
 	@PutMapping(path = "/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void update(@Valid @RequestBody ProductDtoRequest product, @PathVariable Long id) {
 		this.productService.update(product, id);
 	}
